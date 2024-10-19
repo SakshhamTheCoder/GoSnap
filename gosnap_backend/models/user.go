@@ -1,2 +1,2 @@
-package user
+package models
 //user model - db related

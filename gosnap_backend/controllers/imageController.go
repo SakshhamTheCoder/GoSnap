@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -10,61 +9,65 @@ import (
 
 // image transformation logic
 
-func UploadImage(w http.ResponseWriter, r *http.Request){
-	file, _,err := r.FormFile("image")
-	if err!=nil{
-		http.Error(w, "Unable to upload file", http.StatusBadRequest)
-		return
-	}
+func UploadImage(w http.ResponseWriter, r *http.Request) {
+    file, _, err := r.FormFile("image")
+    if err != nil {
+        http.Error(w, "Unable to upload file", http.StatusBadRequest)
+        return
+    }
+    defer file.Close()
 
-	defer file.Close()
+    f, err := os.Create("uploaded_image.jpg")
+    if err != nil {
+        http.Error(w, "Unable to save file", http.StatusInternalServerError)
+        return
+    }
+    defer f.Close()
 
-	f, err:=os.Create("uploaded_image.jpg")
-	if err!=nil{
-		http.Error(w, "Unable to save file", http.StatusInternalServerError)
-		return
-	}
+    _, err = file.Seek(0, 0)
+    if err != nil {
+        http.Error(w, "Unable to read file", http.StatusInternalServerError)
+        return
+    }
 
-	defer f.Close()
-
-	_,err = file.Seek(0,0)
-	if err!=nil{
-		http.Error(w,"Unable to read file", http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println(w, "Image Uploaded Succesfully!")
+    http.Error(w, "Image Uploaded Successfully!", http.StatusOK)
 }
 
-//Converting to GreyScale
-func ConvertToGreyScale(w http.ResponseWriter, r *http.Request){
-	img:=gocv.IMRead("uploaded_image.jpg",gocv.IMReadColor)
-	if img.Empty(){
-		http.Error(w, "Error loading the image", http.StatusInternalServerError)
-		return
-	}
-	defer img.Close()
+// Converting to Greyscale
+func ConvertToGreyScale(w http.ResponseWriter, r *http.Request) {
+    img := gocv.IMRead("uploaded_image.jpg", gocv.IMReadColor)
+    if img.Empty() {
+        http.Error(w, "Error loading the image", http.StatusInternalServerError)
+        return
+    }
+    defer img.Close()
 
-	//now converting the read image to greyscale
+    gocv.CvtColor(img, &img, gocv.ColorBGRToGray)
+    outputPath := "greyscale_image.jpg"
+    gocv.IMWrite(outputPath, img)
 
-	gocv.CvtColor(img,&img,gocv.ColorBGRToGray)
-	gocv.IMWrite("greyscale_image.jpg",img)
-	fmt.Fprintln(w, "Image Converted To GreyScale")
+    w.Header().Set("Content-Disposition", "attachment; filename=greyscale_image.jpg")
+    w.Header().Set("Content-Type", "image/jpeg")
+
+    http.ServeFile(w, r, outputPath) // Serve the file back to the client
 }
 
-//Converting to Black and White
-func ConvertToBlackWhite(w http.ResponseWriter, r *http.Request){
-	img:=gocv.IMRead("uploadd_image.jpg", gocv.IMReadColor)
-	if img.Empty(){
-		http.Error(w, "Error loading image", http.StatusInternalServerError)
-		return
-	}
-	defer img.Close()
+// Converting to Black and White
+func ConvertToBlackWhite(w http.ResponseWriter, r *http.Request) {
+    img := gocv.IMRead("uploaded_image.jpg", gocv.IMReadColor)
+    if img.Empty() {
+        http.Error(w, "Error loading image", http.StatusInternalServerError)
+        return
+    }
+    defer img.Close()
 
-	//convert now the img to black and white
-	gocv.CvtColor(img, &img, gocv.ColorBGRToGray)
-	gocv.Threshold(img, &img, 128, 255, gocv.ThresholdBinary)
+    gocv.CvtColor(img, &img, gocv.ColorBGRToGray)
+    gocv.Threshold(img, &img, 128, 255, gocv.ThresholdBinary)
+    outputPath := "blackwhite_image.jpg"
+    gocv.IMWrite(outputPath, img)
 
-	gocv.IMWrite("blackwhite_image.jpg", img)
-	fmt.Println(w,"Img converted to bnw")
+    w.Header().Set("Content-Disposition", "attachment; filename=blackwhite_image.jpg")
+    w.Header().Set("Content-Type", "image/jpeg")
+
+    http.ServeFile(w, r, outputPath) // Serve the file back to the client
 }
