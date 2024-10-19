@@ -25,17 +25,20 @@ For developers looking to contribute or host GoSnap locally, follow the steps be
    ```bash
    git clone https://github.com/yourusername/gosnap.git
 2. Navigate to the project directory:
+   ```bash
    cd gosnap
 3. Install the dependencies:
-  npm install
+   ```bash
+   npm install
 4. Start the development server:
-  npm start
+   ```bash
+   npm start
 
-##Contributing
-  We welcome contributions! If you'd like to improve GoSnap or report an issue, feel free to:
+## Contributing
+   We welcome contributions! If you'd like to improve GoSnap or report an issue, feel free to:
 1. Fork the repository
 2. Create a new branch for your feature or bugfix
 3. Submit a pull request
 
-##License
+## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
