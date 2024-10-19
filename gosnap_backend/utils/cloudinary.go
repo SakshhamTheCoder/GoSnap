@@ -1,2 +1,2 @@
 // cloudinary configuration
-package cloudinary
+package utils
