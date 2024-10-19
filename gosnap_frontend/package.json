@@ -13,7 +13,10 @@
     "framer-motion": "^11.11.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+<<<<<<< HEAD
     "react-icons": "^5.3.0",
+=======
+>>>>>>> 2f7d664ad799c139580b95c64cd01ce5f4a4ee2b
     "react-router-dom": "^6.27.0",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1"
