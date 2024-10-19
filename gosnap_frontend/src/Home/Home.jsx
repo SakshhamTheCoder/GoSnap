@@ -111,21 +111,21 @@ function Home() {
         </div>
       </div>
     </nav>
-  
-    {/* Image Slider */}
-    <div className="w-[95%] mx-auto mb-10 mt-2">
-      <Slider {...settings} className="relative">
-        {images.map((imgUrl, index) => (
-          <div key={index} className="p-4">
-            <img
-              src={imgUrl}
-              alt={`Slide ${index + 1}`}
-              className="w-full h-[100px] md:h-[380px] object-contain rounded-lg transition-transform duration-500 ease-in-out hover:scale-105"
-            />
-          </div>
-        ))}
-      </Slider>
-    </div>
+  {/* Image Slider */}
+<div className="w-[95%] mx-auto mb-10 mt-2">
+  <Slider {...settings} className="relative">
+    {images.map((imgUrl, index) => (
+      <div key={index} className="p-2">
+        <img
+          src={imgUrl}
+          alt={`Slide ${index + 1}`}
+          className="w-full h-[100px] md:h-[380px] object-cover rounded-lg transition-transform duration-500 ease-in-out transform hover:scale-105 hover:shadow-lg"
+        />
+      </div>
+    ))}
+  </Slider>
+</div>
+
   
     <div className="flex flex-col items-center justify-center text-center h-full">
       <h1 className="text-4xl md:text-5xl font-bold mb-4">
