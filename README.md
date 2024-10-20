@@ -80,4 +80,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 - Thanks to the open-source community for providing great tools and resources.
-- Thanks to the open-source community for providing great tools and resources.
