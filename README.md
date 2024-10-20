@@ -4,6 +4,17 @@
 
 GoSnap is a free online tool that allows you to apply filters to your images with just a few clicks. It provides an intuitive interface for users to enhance and stylize their photos quickly and easily. Whether you're looking to adjust the colors, add artistic effects, or simply touch up your pictures, GoSnap has you covered.
 
+<<<<<<< HEAD
+=======
+## Features
+
+- Apply various filters to your images
+- Simple and user-friendly interface
+- Instant preview of changes
+- Supports multiple image formats
+- Free to use, no account required
+
+>>>>>>> fd1f2d9a150f037143ef585154f874bb938b2b83
 ## How To Use?
 1. Upload your image.
 2. Choose from a variety of filters.
@@ -71,4 +82,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
+<<<<<<< HEAD
 - Thanks to the open-source community for providing great tools and resources.
+=======
+- Thanks to the open-source community for providing great tools and resources.
+>>>>>>> fd1f2d9a150f037143ef585154f874bb938b2b83
