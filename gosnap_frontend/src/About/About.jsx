@@ -1,26 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub } from "react-icons/fa"; // Importing the LinkedIn and GitHub icons
+import { FaLinkedin, FaGithub } from "react-icons/fa"; 
 
 const About = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [bgClass, setBgClass] = useState("bg-[url('/bg.jpg')]"); 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const dropdownRef = useRef(null);
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false); 
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   const navigate = useNavigate();
 
   const teamMembers = [
@@ -51,34 +38,61 @@ const About = () => {
   ];
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 }, 
+    hidden: { opacity: 0, y: 50 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
       transition: {
         duration: 1,
-        delay: i * 0.5, 
+        delay: i * 0.3,
         ease: "easeOut",
       },
     }),
   };
 
   const headingVariants = {
-    hidden: { opacity: 0, y: -50 }, 
+    hidden: { opacity: 0, y: -50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.5, 
+        duration: 1.5,
         ease: "easeOut",
       },
     },
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleScroll = () => {
+    // Check if the user has scrolled to the bottom of the page
+    const isAtBottom =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 1;
+    
+    if (isAtBottom) {
+      setBgClass("bg-gray-950 "); 
+    } else {
+      setBgClass("bg-[url('/bg.jpg')]"); 
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("scroll", handleScroll); // Add scroll event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll); // Cleanup on unmount
+    };
+  }, []);
+
   return (
-    <div className="h-[1500px] md:h-[1500px] w-full flex flex-col text-white bg-[url('/bg.jpg')] bg-cover bg-center">
+    <div className={`h-[1300px] md:h-[1300px] w-full flex flex-col text-white ${bgClass} bg-cover bg-center`}>
       {/* Navbar */}
-      <nav className="flex items-center justify-between p-3 bg-gray-950 bg-opacity-70 fixed top-0 left-0 w-full z-10">
+      <nav className="flex items-center justify-between p-5 bg-gray-950 bg-opacity-70 fixed top-0 left-0 w-full z-10">
         <div className="text-2xl font-bold">
           <img
             src="/logo.jpg"
@@ -146,21 +160,21 @@ const About = () => {
       </nav>
 
       {/* Image Section */}
-      <div className="relative bg-cover bg-center h-[600px] md:h-[600px]"></div>
+      <div className=" bg-cover bg-center h-[600px] md:h-[600px]"></div>
 
       {/* Content Section */}
-      <div className=" h-[500px] md:h-[500px] p-8 mb-0 bg-transparent "></div>
+      <div className="h-[800px] md:h-[800px] p-8 mb-0 bg-transparent"></div>
 
       {/* Team Section */}
-      <div className="h-[400px] md:h-[400px] w-full p-8 mb-0 bg-gray-900 bg-opacity-50 ">
+      <div className="h-[500px] md:h-[500px] w-full p-8 mb-0 bg-gray-900 bg-opacity-50 ">
         <motion.h2
-          className="text-3xl font-extrabold text-center mb-4 text-white "
+          className="text-5xl font-extrabold text-center mb-4 text-white "
           variants={headingVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
         >
-          Meet Our Team
+          Connect With Us!
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -168,11 +182,11 @@ const About = () => {
             <motion.div
               key={index}
               className="bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col items-center"
-              custom={index} 
-              variants={cardVariants} 
+              custom={index}
+              variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
             >
               <img
                 src={member.img}
@@ -182,7 +196,6 @@ const About = () => {
               <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
               <p className="text-sm text-indigo-400 mb-1">{member.position}</p>
               <p className="text-sm text-gray-400 text-center">{member.description}</p>
-
 
               <div className="flex space-x-4 mt-4">
                 <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
@@ -194,6 +207,7 @@ const About = () => {
               </div>
             </motion.div>
           ))}
+          <div className="h-[80px] md:h-[80px] w-full p-8 mb-0" ></div>
         </div>
       </div>
     </div>
