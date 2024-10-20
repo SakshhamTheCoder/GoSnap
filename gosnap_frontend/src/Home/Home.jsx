@@ -128,7 +128,13 @@ function Home() {
       {/* Navbar */}
       <nav className="flex items-center justify-between p-6 bg-transparent">
         <div className="text-2xl font-bold">
-          <img src="/logo.jpg" alt="GoSnap" className="h-[3.5rem] w-auto md:h-[3.5rem] rounded-xl " />
+          <img 
+            src="/logo.jpg" 
+            alt="GoSnap" 
+            className="h-[3.5rem] w-auto md:h-[3.5rem] rounded-xl " 
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' } }
+            />
         </div>
         <div className="flex space-x-2 md:space-x-6">
           <div className="relative inline-block text-left" ref={dropdownRef}>

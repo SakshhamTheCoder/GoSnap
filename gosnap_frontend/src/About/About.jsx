@@ -94,10 +94,12 @@ const About = () => {
       {/* Navbar */}
       <nav className="flex items-center justify-between p-5 bg-gray-950 bg-opacity-70 fixed top-0 left-0 w-full z-10">
         <div className="text-2xl font-bold">
-          <img
-            src="/logo.jpg"
-            alt="GoSnap"
-            className="h-[3.5rem] w-auto md:h-[3.5rem] rounded-xl"
+        <img 
+            src="/logo.jpg" 
+            alt="GoSnap" 
+            className="h-[3.5rem] w-auto md:h-[3.5rem] rounded-xl " 
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' } }
           />
         </div>
         <div className="flex space-x-2 md:space-x-6">
