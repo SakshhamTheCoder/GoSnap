@@ -79,8 +79,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-<<<<<<< HEAD
 - Thanks to the open-source community for providing great tools and resources.
-=======
 - Thanks to the open-source community for providing great tools and resources.
->>>>>>> fd1f2d9a150f037143ef585154f874bb938b2b83
