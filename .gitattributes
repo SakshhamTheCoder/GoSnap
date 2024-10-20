@@ -1,0 +1,25 @@
+# Set default behavior for all text files to use LF
+* text=auto
+
+# Explicitly specify binary files
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.zip binary
+*.exe binary
+*.dll binary
+*.bin binary
+
+# If you have other file types that should be treated as binary, add them here
+
+# Explicitly define file types for consistent line endings
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

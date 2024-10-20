@@ -1,0 +1,27 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./gosnap_backend_mern
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000' # Adjust based on your backend port
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase # Adjust this for your MongoDB
+
+  frontend:
+    build:
+      context: ./gosnap_frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000' # Adjust if your frontend uses a different port
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017' # MongoDB default port
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
