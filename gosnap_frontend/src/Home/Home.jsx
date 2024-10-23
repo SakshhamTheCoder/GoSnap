@@ -20,6 +20,7 @@ function Home() {
   const [isProcessing, setIsProcessing] = useState(false); // State to manage processing status
   const [filters, setFilters] = useState([]); // State to hold filter list
   const [filter, setFilter] = useState(''); // State to hold selected filter
+  const [value, setValue] = useState(null); // State to hold brightness value
 
   const base = 'http://localhost:5000/api/image/';
 
@@ -64,6 +65,7 @@ function Home() {
 
     const formData = new FormData();
     formData.append('image', imgFile);
+    if (value) formData.append('value', value);
 
     try {
       setIsProcessing(true);
@@ -157,29 +159,64 @@ function Home() {
 
             {/* Filter Buttons */}
             {imgUploaded && (
-              <div className="flex space-x-4 mt-4 justify-center">
-                <select className="p-2 rounded-lg bg-gray-800 text-white" onChange={(e) => setFilter(e.target.value)}>
-                  <option value="">Select Filter</option>
-                  {filters.map((filter) => (
-                    <option key={filter.name} value={filter.name}>
-                      {filter.label}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="px-4 py-2 bg-indigo-500 text-white rounded-lg"
-                  onClick={() => applyFilter(filter)}
-                  disabled={isProcessing}
-                >
-                  Apply Filter
-                </button>
-              </div>
-            )}
+              <>
+                <div className="flex space-x-4 mt-4 justify-center">
+                  <select className="p-2 rounded-lg bg-gray-800 text-white" onChange={(e) => { setFilter(e.target.value); setValue(null); }}>
+                    <option value="">Select Filter</option>
+                    {filters.map((filter) => (
+                      <option key={filter.name} value={filter.name}>
+                        {filter.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg"
+                    onClick={() => applyFilter(filter)}
+                    disabled={isProcessing}
+                  >
+                    {
+                      isProcessing ? 'Processing...' : 'Apply Filter'
+                    }
+                  </button>
+                </div>
+                {filter == 'brightness' && (<>
+                  <div className='flex justify-center items-center space-x-4 mt-4'>
+                    <p className="text-gray-500">Adjust brightness</p>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      defaultValue="1"
+                      step="0.1"
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                    />
+                    <p className="text-gray-500 w-2">{value}</p>
+                  </div>
+                </>
+                )}
+                {filter == 'saturation' && (<>
+                  <div className='flex justify-center items-center space-x-4 mt-4'>
+                    <p className="text-gray-500">Adjust saturation</p>
+                    <input
+                      type="range"
+                      min="0"
+                      max="2"
+                      defaultValue="1"
+                      step="0.1"
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                    />
+                    <p className="text-gray-500 w-2">{value}</p>
+                  </div>
+                </>
+                )}
+              </>)}
           </div>
 
           {/* Display Processed Image */}
           {processedImg && (
-            <div className="mt-6 flex flex-col space-y-9">
+            <div className="mt-14 m-8 flex flex-col space-y-9">
               <img src={processedImg} alt="Processed" className="max-h-[300px] mx-auto" />
               <a
                 href={processedImg}

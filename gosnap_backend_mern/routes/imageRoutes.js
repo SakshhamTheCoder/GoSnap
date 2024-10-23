@@ -9,6 +9,10 @@ import {
     applySepia,
     applyInvert,
     applySharpen,
+    applyBrightness,
+    applySaturation,
+    applyFlip,
+    applyFlop
 
 } from '../controllers/imageController.js';
 
@@ -18,6 +22,10 @@ router.post('/gaussianblur', upload.single('image'), applyGaussianBlur);
 router.post('/sepia', upload.single('image'), applySepia);
 router.post('/invert', upload.single('image'), applyInvert);
 router.post('/sharpen', upload.single('image'), applySharpen);
+router.post('/brightness', upload.single('image'), applyBrightness);
+router.post('/saturation', upload.single('image'), applySaturation);
+router.post('/flip', upload.single('image'), applyFlip);
+router.post('/flop', upload.single('image'), applyFlop);
 
 router.get('/list', (req, res) => {
     res.send({
@@ -46,6 +54,22 @@ router.get('/list', (req, res) => {
                 name: 'sharpen',
                 label: 'Sharpen',
             },
+            {
+                name: 'brightness',
+                label: 'Brightness',
+            },
+            {
+                name: 'saturation',
+                label: 'Saturation',
+            },
+            {
+                name: 'flip',
+                label: 'Flip Vertically',
+            },
+            {
+                name: 'flop',
+                label: 'Flop Horizontally',
+            }
         ],
     });
 });
