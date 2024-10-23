@@ -1,19 +1,13 @@
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
+import express, { json } from 'express';
+import cors from 'cors';
+import imageRoutes from './routes/imageRoutes.js';
 
 const app = express();
 const port = 5000;
 
 // Middleware
 app.use(cors()); // Enable CORS
-app.use(express.json());
-
-// Import routes
-const imageRoutes = require('./routes/imageRoutes');
-
-// Middleware to serve static files (processed images)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(json());
 
 // Use routes
 app.use('/api/image', imageRoutes);

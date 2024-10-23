@@ -1,16 +1,53 @@
-const express = require('express');
-const router = express.Router();
-const multer = require('../middleware/multerConfig'); // Ensure this path is correct
+import { Router } from 'express';
+const router = Router();
+import upload from '../middleware/multerConfig.js';
 
-const { uploadImage, applyGreyscale, applyBlackWhite } = require('../controllers/imageController'); // Check this import
+import {
+    applyGreyscale,
+    applyBlackWhite,
+    applyGaussianBlur,
+    applySepia,
+    applyInvert,
+    applySharpen,
 
-// Route for uploading image
-router.post('/upload', multer.single('image'), uploadImage);
+} from '../controllers/imageController.js';
 
-// Route for applying greyscale filter
-router.post('/greyscale', multer.single('image'), applyGreyscale); // Changed the route from '/api/greyscale' to '/greyscale'
+router.post('/greyscale', upload.single('image'), applyGreyscale);
+router.post('/blackwhite', upload.single('image'), applyBlackWhite);
+router.post('/gaussianblur', upload.single('image'), applyGaussianBlur);
+router.post('/sepia', upload.single('image'), applySepia);
+router.post('/invert', upload.single('image'), applyInvert);
+router.post('/sharpen', upload.single('image'), applySharpen);
 
-// Route for applying black & white filter
-router.post('/blackwhite', multer.single('image'), applyBlackWhite); // Changed the route from '/api/blackwhite' to '/blackwhite'
+router.get('/list', (req, res) => {
+    res.send({
+        filters: [
+            {
+                name: 'greyscale',
+                label: 'Greyscale',
+            },
+            {
+                name: 'blackwhite',
+                label: 'Black & White',
+            },
+            {
+                name: 'gaussianblur',
+                label: 'Gaussian Blur',
+            },
+            {
+                name: 'sepia',
+                label: 'Sepia',
+            },
+            {
+                name: 'invert',
+                label: 'Invert',
+            },
+            {
+                name: 'sharpen',
+                label: 'Sharpen',
+            },
+        ],
+    });
+});
 
-module.exports = router;
+export default router;

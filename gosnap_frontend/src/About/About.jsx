@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub } from "react-icons/fa"; 
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import Navbar from "../components/Navbar/";
 
 const About = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [bgClass, setBgClass] = useState("bg-[url('/bg.jpg')]"); 
-  const toggleDropdown = () => setIsOpen(!isOpen);
-  const dropdownRef = useRef(null);
-  const navigate = useNavigate();
+  const [bgClass, setBgClass] = useState("bg-[url('/bg.jpg')]");
 
   const teamMembers = [
     {
       name: "Dhruv Goyal",
-      position: "Backend Developer",
+      position: "Fullstack Developer",
       img: "/dhruv.jpg",
       description: "",
       linkedin: "https://www.linkedin.com/in/DhruvGoyalThapar/",
@@ -21,7 +18,7 @@ const About = () => {
     },
     {
       name: "Sakshham Bhagat",
-      position: "Backend Developer",
+      position: "Fullstack Developer",
       img: "/sakshham.jpg",
       description: "",
       linkedin: "https://www.linkedin.com/in/SakshhamTheCoder",
@@ -62,104 +59,11 @@ const About = () => {
     },
   };
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  const handleScroll = () => {
-    // Check if the user has scrolled to the bottom of the page
-    const isAtBottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 1;
-    
-    if (isAtBottom) {
-      setBgClass("bg-gray-950 "); 
-    } else {
-      setBgClass("bg-[url('/bg.jpg')]"); 
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("scroll", handleScroll); // Add scroll event listener
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("scroll", handleScroll); // Cleanup on unmount
-    };
-  }, []);
 
   return (
     <div className={`h-[1300px] md:h-[1300px] w-full flex flex-col text-white ${bgClass} bg-cover bg-center`}>
       {/* Navbar */}
-      <nav className="flex items-center justify-between p-5 bg-gray-950 bg-opacity-70 fixed top-0 left-0 w-full z-10">
-        <div className="text-2xl font-bold">
-        <img 
-            src="/logo.jpg" 
-            alt="GoSnap" 
-            className="h-[3.5rem] w-auto md:h-[3.5rem] rounded-xl " 
-            onClick={() => navigate('/')}
-            style={{ cursor: 'pointer' } }
-          />
-        </div>
-        <div className="flex space-x-2 md:space-x-6">
-          <div className="relative inline-block text-left" ref={dropdownRef}>
-            <div className="flex items-center p-1 rounded-full bg-gray-200 shadow-lg">
-              <button
-                onClick={toggleDropdown}
-                className="inline-flex justify-center rounded-full border border-gray-300 shadow-sm px-4 py-1.5 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-              >
-                Explore Filters
-              </button>
-            </div>
-
-            {/* Dropdown Menu */}
-            <div
-              className={`${
-                isOpen ? "block" : "hidden"
-              } origin-top-right absolute right-0 mt-2 w-56 z-50 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
-            >
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                  Filter 1
-                </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                  Filter 2
-                </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                  Filter 3
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center p-1 rounded-full bg-gray-200 shadow-lg">
-            <button
-              className="inline-flex justify-center rounded-full border border-gray-300 shadow-sm px-4 py-1.5 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-              onClick={() => navigate("/About")}
-            >
-              About Us
-            </button>
-          </div>
-
-          <div className="flex items-center space-x-4 text-blue-950">
-            <div className="flex items-center p-1 rounded-full bg-gray-200 shadow-lg">
-              <button
-                className="outline-none px-4 py-1 rounded-l-full text-blue-950 bg-white hover:text-violet-600 focus:border-blue-600 transition duration-200 ease-in-out"
-                aria-pressed="true"
-              >
-                Light
-              </button>
-              <button
-                className="outline-none px-4 py-1 rounded-r-full text-white bg-gray-950 hover:text-violet-600 focus:border-blue-600 transition duration-200 ease-in-out"
-                aria-pressed="false"
-              >
-                Dark
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Image Section */}
       <div className=" bg-cover bg-center h-[600px] md:h-[600px]"></div>

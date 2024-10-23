@@ -1,18 +1,4 @@
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
-
-// Upload image handler
-const uploadImage = (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'Please upload an image' });
-  }
-
-  const outputPath = path.join(__dirname, '../uploads', req.file.originalname);
-  fs.writeFileSync(outputPath, req.file.buffer); // Save the file
-
-  res.status(200).json({ message: 'Image uploaded successfully', filename: req.file.originalname });
-};
+import sharp from 'sharp';
 
 // Apply greyscale filter handler
 const applyGreyscale = async (req, res) => {
@@ -44,5 +30,80 @@ const applyBlackWhite = async (req, res) => {
   }
 };
 
+// Apply Gaussian blur filter handler
+const applyGaussianBlur = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please upload an image' });
+  }
+
+  try {
+    const gaussianBlurImage = await sharp(req.file.buffer).blur(10).toFormat('jpeg').toBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.send(gaussianBlurImage);
+  } catch (error) {
+    res.status(500).json({ error: 'Error applying gaussian blur filter' });
+  }
+};
+
+// Apply sepia filter handler (using manual color adjustments)
+const applySepia = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please upload an image' });
+  }
+
+  try {
+    const sepiaImage = await sharp(req.file.buffer)
+      .modulate({
+        brightness: 1.1,
+        saturation: 0.3,
+        hue: 30
+      })
+      .toFormat('jpeg')
+      .toBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.send(sepiaImage);
+  } catch (error) {
+    res.status(500).json({ error: 'Error applying sepia filter' });
+  }
+};
+
+// Apply invert (negate) filter handler
+const applyInvert = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please upload an image' });
+  }
+
+  try {
+    const invertImage = await sharp(req.file.buffer)
+      .ensureAlpha()  // Ensure alpha channel is handled
+      .negate({ alpha: false })  // Invert without affecting transparency (alpha)
+      .toFormat('jpeg')
+      .toBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.send(invertImage);
+  } catch (error) {
+    res.status(500).json({ error: 'Error applying invert filter' });
+  }
+};
+
+// Apply sharpen filter handler
+const applySharpen = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please upload an image' });
+  }
+
+  try {
+    const sharpenImage = await sharp(req.file.buffer).sharpen({
+      sigma: 1,
+      flat: 1,
+      jagged: 2
+    }).toFormat('jpeg').toBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.send(sharpenImage);
+  } catch (error) {
+    res.status(500).json({ error: 'Error applying sharpen filter' });
+  }
+};
+
 // Exporting the functions
-module.exports = { uploadImage, applyGreyscale, applyBlackWhite };
+export { applyGreyscale, applyBlackWhite, applyGaussianBlur, applySepia, applyInvert, applySharpen };
