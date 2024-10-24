@@ -153,208 +153,211 @@ function Home() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-black to-gray-900 text-white">
-      <Navbar tranparent />
-      <div className="w-[85%] mx-auto mb-10 mt-2">
-        <Slider {...settings} className="relative">
-          {images.map((imgUrl, index) => (
-            <div key={index} className="p-2">
-              <img
-                src={imgUrl}
-                alt={`Slide ${index + 1}`}
-                className="select-none w-full h-[100px] md:h-[380px] object-cover rounded-lg transition-transform duration-500 ease-in-out transform hover:scale-105 hover:shadow-lg"
-              />
-            </div>
-          ))}
-        </Slider>
-      </div>
-
-      <div className="flex flex-col items-center justify-center text-center h-full pb-8">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Apply Filters to Your Images <span className="text-indigo-400">Effortlessly</span>
-        </h1>
-        <p className="text-lg md:text-xl mb-8 max-w-lg">
-          GoSnap is a free online tool that allows you to apply filters to your images with just a few clicks.
-        </p>
-
-        <div className="flex flex-col md:flex-row justify-evenly w-full">
-          <div>
-            <div
-              className={`m-8 border-4 border-dashed rounded-lg p-5 bg-gray-700 text-gray-300 text-center cursor-pointer ${isDragging ? 'border-indigo-500' : 'border-gray-500'}`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setIsDragging(true);
-              }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={handleDrop}
-              onClick={() => document.getElementById('imgInput').click()}
-            >
-              {imgUploaded ? (
-                <img src={img} alt="Uploaded" className="max-h-[300px] mx-auto" />
-              ) : (
-                <>
-                  <p className="text-lg">Drag and drop your image here or click to upload</p>
-                  <p className="text-sm text-gray-500">Supported formats: JPG, PNG, JPEG</p>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                id="imgInput"
-                className="hidden"
-                onChange={handleImgChange}
-              />
-            </div>
-
-            {imgUploaded && (
-              <>
-                <div className="flex space-x-4 mt-4 justify-center">
-                  <select className="p-2 rounded-lg bg-gray-800 text-white" onChange={(e) => { setFilter(e.target.value); setValue(null); }}>
-                    <option value="">Select Filter</option>
-                    {filters.map((filter) => (
-                      <option key={filter.name} value={filter.name}>
-                        {filter.label}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg"
-                    onClick={() => applyFilter(filter)}
-                    disabled={isProcessing}
-                  >
-                    {isProcessing ? 'Processing...' : 'Apply Filter'}
-                  </button>
-                </div>
-
-                {filter === 'brightness' && (
-                  <div className="flex justify-center items-center space-x-4 mt-4">
-                    <p className="text-gray-500">Adjust brightness</p>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="2"
-                      defaultValue="1"
-                      step="0.1"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                    />
-                    <p className="text-gray-500 w-2">{value}</p>
-                  </div>
-                )}
-                
-                { /* Adding cropping UI */}
-                {filter === 'crop' && (
-                  <div className="relative w-full h-80 bg-gray-800 mt-6">
-                    <Cropper
-                      image={img}
-                      crop={crop}
-                      zoom={zoom}
-                      onCropChange={setCrop}
-                      onCropComplete={onCropComplete}
-                      onZoomChange={setZoom}
-                    />
-
-                    {/* Optional Zoom control */}
-                    <div className="flex flex-col items-center space-y-4 mt-4">
-                      <label className="text-gray-500">Zoom:</label>
-                      <input
-                        type="range"
-                        min="1"
-                        max="3"
-                        step="0.1"
-                        value={zoom}
-                        onChange={(e) => setZoom(e.target.value)}
-                        className="w-48"
-                      />
-                    </div>
-
-                    <button
-                      className="absolute bottom-4 right-4 px-4 py-2 bg-indigo-600 text-white rounded-lg"
-                      onClick={applyCrop}
-                    >
-                      Apply Crop
-                    </button>
-                  </div>
-                )}
-
-
-                {filter === 'saturation' && (
-                  <div className="flex justify-center items-center space-x-4 mt-4">
-                    <p className="text-gray-500">Adjust saturation</p>
-                    <input
-                      type="range"
-                      min="0"
-                      max="2"
-                      defaultValue="1"
-                      step="0.1"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                    />
-                    <p className="text-gray-500 w-2">{value}</p>
-                  </div>
-                )}
-
-                {filter === 'resize' && (
-                  <div className="mb-6">
-                    <input
-                      type="number"
-                      placeholder="Width"
-                      className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
-                      value={resizeData.width}
-                      onChange={(e) => setResizeData({ ...resizeData, width: e.target.value })}
-                    />
-                    <input
-                      type="number"
-                      placeholder="Height"
-                      className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
-                      value={resizeData.height}
-                      onChange={(e) => setResizeData({ ...resizeData, height: e.target.value })}
-                    />
-                  </div>
-                )}
-
-
-                {filter === 'watermark' && (
-                  <div className="mb-6">
-                    <input
-                      type="text"
-                      placeholder="Enter Watermark Text"
-                      className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
-                      value={watermarkText}
-                      onChange={(e) => setWatermarkText(e.target.value)}
-                    />
-                  </div>
-                )}
-
-                {filter === 'convert' && (
-                  <div className="mb-6">
-                    <select value={format} onChange={(e) => setFormat(e.target.value)} className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded">
-                      <option value="jpeg">JPEG</option>
-                      <option value="png">PNG</option>
-                      <option value="webp">WEBP</option>
-                      <option value="jpg">JPG</option>
-                    </select>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-
-          {processedImg && (
-            <div className="mt-14 m-8 flex flex-col space-y-9">
-              <img src={processedImg} alt="Processed" className="max-h-[300px] mx-auto" />
-              <a
-                href={processedImg}
-                download={`converted_image.${format}`} // Correct file format for download
-                className="px-4 py-2 bg-indigo-500 text-white rounded-lg"
-              >
-                Download Processed Image
-              </a>
-            </div>
-          )}
+  <Navbar tranparent />
+  <div className="w-[90%] mx-auto mb-10 mt-6">
+    <Slider {...settings} className="relative">
+      {images.map((imgUrl, index) => (
+        <div key={index} className="p-2">
+          <img
+            src={imgUrl}
+            alt={`Slide ${index + 1}`}
+            className="select-none w-full h-[150px] md:h-[400px] object-cover rounded-lg transition-transform duration-500 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          />
         </div>
+      ))}
+    </Slider>
+  </div>
+
+  <div className="flex flex-col items-center justify-center text-center h-full pb-8">
+    <h1 className="text-3xl md:text-5xl font-bold mb-6">
+      Apply Filters to Your Images <span className="text-indigo-400">Effortlessly</span>
+    </h1>
+    <p className="text-lg md:text-xl mb-10 max-w-lg mx-auto">
+      GoSnap is a free online tool that allows you to apply filters to your images with just a few clicks.
+    </p>
+
+    <div className="flex flex-col md:flex-row justify-evenly w-full space-y-6 md:space-y-0">
+      <div>
+        <div
+          className={`m-8 border-4 border-dashed rounded-lg p-6 bg-gray-700 text-gray-300 text-center cursor-pointer transition-all duration-300 ${isDragging ? 'border-indigo-500' : 'border-gray-500'}`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById('imgInput').click()}
+        >
+          {imgUploaded ? (
+            <img src={img} alt="Uploaded" className="max-h-[300px] mx-auto rounded-lg shadow-lg" />
+          ) : (
+            <>
+              <p className="text-lg">Drag and drop your image here or click to upload</p>
+              <p className="text-sm text-gray-500">Supported formats: JPG, PNG, JPEG</p>
+            </>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            id="imgInput"
+            className="hidden"
+            onChange={handleImgChange}
+          />
+        </div>
+
+        {imgUploaded && (
+          <>
+            <div className="flex space-x-4 mt-4 justify-center">
+              <select className="p-2 rounded-lg bg-gray-800 text-white" onChange={(e) => { setFilter(e.target.value); setValue(null); }}>
+                <option value="">Select Filter</option>
+                {filters.map((filter) => (
+                  <option key={filter.name} value={filter.name}>
+                    {filter.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="px-4 py-2 bg-indigo-500 text-white rounded-lg shadow-lg hover:bg-indigo-600 transition-all"
+                onClick={() => applyFilter(filter)}
+                disabled={isProcessing}
+              >
+                {isProcessing ? 'Processing...' : 'Apply Filter'}
+              </button>
+            </div>
+
+            {/* Brightness Filter */}
+            {filter === 'brightness' && (
+              <div className="flex justify-center items-center space-x-4 mt-4">
+                <p className="text-gray-500">Adjust brightness</p>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2"
+                  defaultValue="1"
+                  step="0.1"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+                <p className="text-gray-500 w-2">{value}</p>
+              </div>
+            )}
+
+            {/* Cropping UI */}
+            {filter === 'crop' && (
+              <div className="relative w-full h-80 bg-slate-500 mt-6 rounded-lg shadow-md overflow-hidden">
+                <Cropper
+                  image={img}
+                  crop={crop}
+                  zoom={zoom}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                />
+                <div className="flex flex-col items-center space-y-4 mt-4">
+                  <label className="text-gray-200">Zoom:</label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="3"
+                    step="0.1"
+                    value={zoom}
+                    onChange={(e) => setZoom(e.target.value)}
+                    className="w-48"
+                  />
+                </div>
+                <button
+                  className="absolute bottom-4 right-4 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-all"
+                  onClick={applyCrop}
+                >
+                  Apply Crop
+                </button>
+              </div>
+            )}
+
+            {/* Saturation Filter */}
+            {filter === 'saturation' && (
+              <div className="flex justify-center items-center space-x-4 mt-4">
+                <p className="text-gray-500">Adjust saturation</p>
+                <input
+                  type="range"
+                  min="0"
+                  max="2"
+                  defaultValue="1"
+                  step="0.1"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+                <p className="text-gray-500 w-2">{value}</p>
+              </div>
+            )}
+
+            {/* Resize Filter */}
+            {filter === 'resize' && (
+              <div className="mb-6">
+                <input
+                  type="number"
+                  placeholder="Width"
+                  className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
+                  value={resizeData.width}
+                  onChange={(e) => setResizeData({ ...resizeData, width: e.target.value })}
+                />
+                <input
+                  type="number"
+                  placeholder="Height"
+                  className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
+                  value={resizeData.height}
+                  onChange={(e) => setResizeData({ ...resizeData, height: e.target.value })}
+                />
+              </div>
+            )}
+
+            {/* Watermark Filter */}
+            {filter === 'watermark' && (
+              <div className="mb-6">
+                <input
+                  type="text"
+                  placeholder="Enter Watermark Text"
+                  className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded"
+                  value={watermarkText}
+                  onChange={(e) => setWatermarkText(e.target.value)}
+                />
+              </div>
+            )}
+
+            {/* Convert Filter */}
+            {filter === 'convert' && (
+              <div className="mb-6">
+                <select value={format} onChange={(e) => setFormat(e.target.value)} className="p-2 m-2 bg-gray-700 text-white border border-gray-500 rounded">
+                  <option value="jpeg">JPEG</option>
+                  <option value="png">PNG</option>
+                  <option value="webp">WEBP</option>
+                  <option value="jpg">JPG</option>
+                </select>
+              </div>
+            )}
+          </>
+        )}
       </div>
+
+      {processedImg && (
+  <div className="mt-14 m-14 flex flex-col items-center space-y-6">
+    <img 
+      src={processedImg} 
+      alt="Processed" 
+      className="w-full max-w-[450px] max-h-[450px] object-contain rounded-lg shadow-lg" 
+    />
+    <a
+      href={processedImg}
+      download={`converted_image.${format}`}
+      className="px-4 py-2 bg-indigo-500 text-white rounded-lg shadow-lg hover:bg-indigo-600 transition-all"
+    >
+      Download Processed Image
+    </a>
+  </div>
+)}
     </div>
-  );
-}
+  </div>
+</div>
+  )};
 
 export default Home;

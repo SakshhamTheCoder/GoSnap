@@ -6,10 +6,7 @@ const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors({
-  methods: ["POST", "GET"],
-  credentials: true
-})); // Enable CORS!
+app.use(cors()); // Enable CORS!
 app.use(json());
 
 // Use routes
