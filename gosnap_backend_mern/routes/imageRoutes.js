@@ -12,7 +12,12 @@ import {
     applyBrightness,
     applySaturation,
     applyFlip,
-    applyFlop
+    applyFlop,
+    cropImage,
+    resizeImage,
+    applyWatermark,
+    compressImage,
+    convertImageFormat
 
 } from '../controllers/imageController.js';
 
@@ -26,6 +31,11 @@ router.post('/brightness', upload.single('image'), applyBrightness);
 router.post('/saturation', upload.single('image'), applySaturation);
 router.post('/flip', upload.single('image'), applyFlip);
 router.post('/flop', upload.single('image'), applyFlop);
+router.post('/crop', upload.single('image'), cropImage);
+router.post('/resize', upload.single('image'), resizeImage);
+router.post('/watermark', upload.single('image'), applyWatermark);
+router.post('/compress', upload.single('image'), compressImage);
+router.post('/convert', upload.single('image'), convertImageFormat);
 
 router.get('/list', (req, res) => {
     res.send({
@@ -69,6 +79,26 @@ router.get('/list', (req, res) => {
             {
                 name: 'flop',
                 label: 'Flop Horizontally',
+            },
+            {
+                name: 'crop',
+                label: 'Crop Image'
+            },
+            {
+                name: 'resize',
+                label: 'Resize Image'
+            },
+            {
+                name: 'watermark',
+                label: 'Watermark Image'
+            },
+            {
+                name: 'compress',
+                label: 'Compress Image'
+            },
+            {
+                name: 'convert',
+                label: 'Convert Image'
             }
         ],
     });
