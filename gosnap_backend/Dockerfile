@@ -1,23 +1,20 @@
-# Use the latest official Golang image as the base
-FROM golang:latest
-
-# Install OpenCV dependencies
-RUN apt-get update && apt-get install -y libopencv-dev pkg-config && rm -rf /var/lib/apt/lists/*
+# Use the official Node.js image as the base
+FROM node:latest
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Go project into the container
+# Copy the package.json and package-lock.json (if available)
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy the rest of the application code into the container
 COPY . .
 
-# Install Go dependencies
-RUN go mod tidy
+# Expose the port the app runs on (adjust based on your server.js)
+EXPOSE 5000
 
-# Build the Go application
-RUN go build -o main .
-
-# Expose the port the app runs on
-EXPOSE 8080
-
-# Command to run the Go backend
-CMD ["./main"]
+# Command to run the Node.js backend
+CMD ["npm", "run", "dev"]
