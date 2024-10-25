@@ -28,6 +28,7 @@ function Home() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const base = 'https://gosnap-backend.vercel.app/api/image/';
   const onCropComplete = useCallback((_, croppedAreaPixels) => {
@@ -138,11 +139,20 @@ function Home() {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: screenWidth < 768 ? 1 : 2,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3500,
@@ -154,7 +164,7 @@ function Home() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-black to-gray-900 text-white">
       <Navbar tranparent />
-      <div className="w-[96%] mx-auto mb-10 mt-6">
+      <div className="mx-10 mb-10 mt-6 p-2">
         <Slider {...settings} className="relative">
           {images.map((imgUrl, index) => (
             <div key={index} className="p-2">
@@ -168,7 +178,7 @@ function Home() {
         </Slider>
       </div>
 
-      <div className="flex flex-col items-center justify-center text-center h-full pb-8">
+      <div className="flex flex-col items-center justify-center text-center h-full pb-8 p-2">
         <h1 className="text-3xl md:text-5xl font-bold mb-6">
           Apply Filters to Your Images <span className="text-indigo-400">Effortlessly</span>
         </h1>
