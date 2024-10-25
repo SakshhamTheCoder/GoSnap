@@ -154,7 +154,7 @@ function Home() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-black to-gray-900 text-white">
       <Navbar tranparent />
-      <div className="w-[90%] mx-auto mb-10 mt-6">
+      <div className="w-[96%] mx-auto mb-10 mt-6">
         <Slider {...settings} className="relative">
           {images.map((imgUrl, index) => (
             <div key={index} className="p-2">
