@@ -36,7 +36,7 @@ Participants asked to stop any unacceptable behavior are expected to comply imme
 
 ## Reporting Guidelines
 
-If you experience or witness unacceptable behavior—or have any other concerns—please report it by contacting us at [your-email@example.com]. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
+If you experience or witness unacceptable behavior—or have any other concerns—please report it by contacting us at [sbhagat_be23@thapar.edu]. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
 
 ## Attribution
 
