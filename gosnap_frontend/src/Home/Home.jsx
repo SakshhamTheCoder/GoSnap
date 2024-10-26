@@ -92,7 +92,7 @@ function Home() {
   };
 
   const applyFilter = async (filterType) => {
-    if (!imgFile) return;
+    if (filterType === '' || !imgFile) return;
     const endpoint = base + filterType;
 
     const formData = new FormData();
@@ -106,6 +106,8 @@ function Home() {
       formData.append('height', cropData.height);
       formData.append('top', cropData.top);
       formData.append('left', cropData.left);
+      applyCrop();
+      return;
     }
     if (filterType === 'resize') {
       formData.append('width', resizeData.width);
@@ -169,6 +171,7 @@ function Home() {
           {images.map((imgUrl, index) => (
             <div key={index} className="p-2">
               <img
+                loading='lazy'
                 src={imgUrl}
                 alt={`Slide ${index + 1}`}
                 className="select-none w-full h-[150px] md:h-[400px] object-cover rounded-lg transition-transform duration-500 ease-in-out transform hover:scale-105 hover:shadow-lg"
@@ -275,12 +278,7 @@ function Home() {
                         className="w-48"
                       />
                     </div>
-                    <button
-                      className="absolute bottom-4 right-4 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-all"
-                      onClick={applyCrop}
-                    >
-                      Apply Crop
-                    </button>
+
                   </div>
                 )}
 
